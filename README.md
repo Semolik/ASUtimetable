@@ -7,7 +7,7 @@
 ### backend
     docker-compose build
 ## Настройка
-Для запуска локально поменять в файле [http-common.vue](src/http-common.vue) переменую на ссылку в локальной сети
+Для запуска локально поменять в файле [http-common.vue](client/src/http-common.vue) переменую на ссылку в локальной сети
     
     baseURL: '/api',
 
