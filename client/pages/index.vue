@@ -1,20 +1,47 @@
 <template>
     <div class="index-page">
-        <div class="plus-button" @click="add">
+        <div class="groups">
+            <div
+                v-for="group in groups"
+                :class="[
+                    'group',
+                    { active: groupsStore.groupsAreEqual(group, currentGroup) },
+                ]"
+                @click="currentGroup = group"
+            >
+                {{ group.name }}
+            </div>
+        </div>
+        <div
+            class="plus-button"
+            @click="
+                () => {
+                    groupsStore.addGroup({
+                        faculty_id: increment,
+                        group_id: increment,
+                        name: `group ${increment}`,
+                    });
+                    increment++;
+                }
+            "
+        >
             <Icon name="material-symbols:add-rounded" />
         </div>
     </div>
 </template>
 <script setup>
-const add = () => {};
+import { useGroupsStore } from "@/store/groups";
+import { storeToRefs } from "pinia";
+const groupsStore = useGroupsStore();
+const { groups, defaultGroup } = storeToRefs(groupsStore);
+const currentGroup = ref(defaultGroup.value);
+const increment = ref(1);
 </script>
 <style lang="scss" scoped>
 .index-page {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 10px;
-    padding: 10px;
     position: relative;
     height: 100%;
 
@@ -34,6 +61,23 @@ const add = () => {};
             width: 25px;
             height: 25px;
             color: $secondary-color;
+        }
+    }
+    .groups {
+        display: flex;
+        gap: 10px;
+
+        .group {
+            padding: 8px 16px;
+            border-radius: 16px;
+            color: $text-color-2;
+            cursor: pointer;
+            font-weight: 500;
+
+            &.active {
+                background-color: $accent-1;
+                color: $secondary-color;
+            }
         }
     }
 }
