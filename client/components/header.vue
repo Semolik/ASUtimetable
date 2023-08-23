@@ -22,6 +22,8 @@ header {
     .settings-button {
         background-color: $secondary-color;
         padding: 16px;
+
+        box-shadow: $shadow-1;
         border-radius: 16px;
         svg {
             width: 20px;

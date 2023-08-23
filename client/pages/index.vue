@@ -57,6 +57,7 @@ const increment = ref(1);
         justify-content: center;
         align-items: center;
         cursor: pointer;
+
         svg {
             width: 25px;
             height: 25px;
@@ -73,7 +74,8 @@ const increment = ref(1);
             color: $text-color-2;
             cursor: pointer;
             font-weight: 500;
-
+            background-color: transparent;
+            transition: background-color 0.2s ease, color 0.2s ease;
             &.active {
                 background-color: $accent-1;
                 color: $secondary-color;
