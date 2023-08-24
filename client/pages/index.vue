@@ -35,6 +35,12 @@ import { storeToRefs } from "pinia";
 const groupsStore = useGroupsStore();
 const { groups, defaultGroup } = storeToRefs(groupsStore);
 const currentGroup = ref(defaultGroup.value);
+
+watch(defaultGroup, (newdefaultGroup) => {
+    if (groups.value.length <= 1) {
+        currentGroup.value == newdefaultGroup;
+    }
+});
 const increment = ref(1);
 </script>
 <style lang="scss" scoped>
