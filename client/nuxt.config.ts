@@ -4,6 +4,9 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     ssr: false,
     css: ["@/assets/styles/global.scss"],
+    colorMode: {
+        preference: "light",
+    },
     vite: {
         css: {
             preprocessorOptions: {

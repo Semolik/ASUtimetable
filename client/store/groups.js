@@ -4,13 +4,13 @@ import { useLocalStorage } from "@vueuse/core";
 export const useGroupsStore = defineStore("groups", {
     state: () => ({
         groups: useLocalStorage("groups", []),
-        defaultGroup_: useLocalStorage("default-group", {}),
+        defaultGroup: useLocalStorage("default-group", {}),
     }),
     actions: {
         addGroup(group) {
             this.groups.push(group);
             if (this.groups.length === 1) {
-                this.defaultGroup_ = {
+                this.defaultGroup = {
                     faculty_id: group.faculty_id,
                     group_id: group.group_id,
                 };
@@ -30,8 +30,8 @@ export const useGroupsStore = defineStore("groups", {
             this.groups = this.groups.filter(
                 (group_) => !this.groupsAreEqual(group_, group)
             );
-            if (this.groupsAreEqual(group, this.defaultGroup_)) {
-                this.defaultGroup_ =
+            if (this.groupsAreEqual(group, this.defaultGroup)) {
+                this.defaultGroup =
                     this.groups.length > 0
                         ? {
                               faculty_id: this.groups[0].faculty_id,
@@ -40,11 +40,17 @@ export const useGroupsStore = defineStore("groups", {
                         : null;
             }
         },
+        setDefault(group) {
+            this.defaultGroup = {
+                faculty_id: group.faculty_id,
+                group_id: group.group_id,
+            };
+        },
     },
     getters: {
-        defaultGroup() {
+        defaultGroupInfo() {
             return this.groups.find((group) =>
-                this.groupsAreEqual(group, this.defaultGroup_)
+                this.groupsAreEqual(group, this.defaultGroup)
             );
         },
     },

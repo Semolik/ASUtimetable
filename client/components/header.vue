@@ -10,16 +10,23 @@
 
         <Modal v-model:active="settingsModalActive" :min-height="500">
             <template #content>
-                <USelectMenu
-                    v-model="selected"
-                    :options="groupsWithLabels"
-                    :disabled="!defaultGroup"
-                >
-                    <template #label v-if="defaultGroup">
-                        {{ selected?.name }}
-                    </template>
-                    <template #label v-else> Нет избранных групп </template>
-                </USelectMenu>
+                <div class="field">
+                    <label>Группа по умолчанию</label>
+                    <USelectMenu
+                        :model-value="defaultGroup"
+                        @update:model-value="groupsStore.setDefault"
+                        :options="groups"
+                        :disabled="!defaultGroup"
+                        option-attribute="name"
+                        size="xl"
+                        placeholder="dasdas"
+                    >
+                        <template #label v-if="defaultGroup">
+                            {{ defaultGroupInfo.name }}
+                        </template>
+                        <template #label v-else> Нет избранных групп </template>
+                    </USelectMenu>
+                </div>
             </template>
         </Modal>
     </header>
@@ -28,11 +35,7 @@
 import { useGroupsStore } from "@/store/groups";
 import { storeToRefs } from "pinia";
 const groupsStore = useGroupsStore();
-const { groups, defaultGroup } = storeToRefs(groupsStore);
-const groupsWithLabels = computed(() =>
-    groups.value.map((group) => ({ ...group, label: group.name }))
-);
-const selected = ref(defaultGroup.value);
+const { groups, defaultGroup, defaultGroupInfo } = storeToRefs(groupsStore);
 const settingsModalActive = ref(false);
 </script>
 <style lang="scss" scoped>
@@ -58,6 +61,14 @@ header {
             width: 20px;
             height: 20px;
         }
+    }
+}
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    label {
+        font-size: 14px;
     }
 }
 </style>

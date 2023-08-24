@@ -13,6 +13,16 @@
             </div>
         </div>
         <div
+            @click="
+                () => {
+                    groups.length = 0;
+                    defaultGroup = null;
+                }
+            "
+        >
+            clear
+        </div>
+        <div
             class="plus-button"
             @click="
                 () => {
@@ -37,9 +47,7 @@ const { groups, defaultGroup } = storeToRefs(groupsStore);
 const currentGroup = ref(defaultGroup.value);
 
 watch(defaultGroup, (newdefaultGroup) => {
-    if (groups.value.length <= 1) {
-        currentGroup.value == newdefaultGroup;
-    }
+    currentGroup.value = newdefaultGroup;
 });
 const increment = ref(1);
 </script>
@@ -50,6 +58,7 @@ const increment = ref(1);
     gap: 10px;
     position: relative;
     height: 100%;
+    padding: 0px 10px;
 
     .plus-button {
         position: absolute;
@@ -73,14 +82,15 @@ const increment = ref(1);
     .groups {
         display: flex;
         gap: 10px;
-
+        overflow-x: auto;
         .group {
-            padding: 8px 16px;
+            padding: 5px 16px;
             border-radius: 16px;
             color: $text-color-2;
             cursor: pointer;
             font-weight: 500;
             background-color: transparent;
+            white-space: nowrap;
             transition: background-color 0.2s ease, color 0.2s ease;
             &.active {
                 background-color: $accent-1;
