@@ -1,23 +1,19 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
 
-export const useGroupsStore = defineStore("groups", {
+export const useGroupsStore = defineStore("groups_", {
     state: () => ({
-        groups: useLocalStorage("groups", []),
+        groups_: useLocalStorage("groups_", []),
         defaultGroup: useLocalStorage("default-group", {}),
     }),
     actions: {
         addGroup(group) {
-            this.groups.push(group);
-            if (this.groups.length === 1) {
+            this.groups_.push(group);
+            if (this.groups_.length === 1) {
                 this.defaultGroup = {
                     faculty_id: group.faculty_id,
                     group_id: group.group_id,
                 };
-                console.log({
-                    faculty_id: group.faculty_id,
-                    group_id: group.group_id,
-                });
             }
         },
         groupsAreEqual(group1, group2) {
@@ -27,15 +23,15 @@ export const useGroupsStore = defineStore("groups", {
             );
         },
         deleteGroup(group) {
-            this.groups = this.groups.filter(
+            this.groups_ = this.groups_.filter(
                 (group_) => !this.groupsAreEqual(group_, group)
             );
             if (this.groupsAreEqual(group, this.defaultGroup)) {
                 this.defaultGroup =
-                    this.groups.length > 0
+                    this.groups_.length > 0
                         ? {
-                              faculty_id: this.groups[0].faculty_id,
-                              group_id: this.groups[0].group_id,
+                              faculty_id: this.groups_[0].faculty_id,
+                              group_id: this.groups_[0].group_id,
                           }
                         : null;
             }
@@ -49,9 +45,12 @@ export const useGroupsStore = defineStore("groups", {
     },
     getters: {
         defaultGroupInfo() {
-            return this.groups.find((group) =>
+            return this.groups_.find((group) =>
                 this.groupsAreEqual(group, this.defaultGroup)
             );
+        },
+        groups() {
+            return this.groups_;
         },
     },
 });

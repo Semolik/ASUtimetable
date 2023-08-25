@@ -19,13 +19,39 @@
                         :disabled="!defaultGroup"
                         option-attribute="name"
                         size="xl"
-                        placeholder="dasdas"
                     >
-                        <template #label v-if="defaultGroup">
-                            {{ defaultGroupInfo.name }}
+                        <template #label>
+                            <span v-if="defaultGroup">{{
+                                defaultGroupInfo?.name
+                            }}</span>
+                            <span v-else>Нет избранных групп</span>
                         </template>
-                        <template #label v-else> Нет избранных групп </template>
                     </USelectMenu>
+                </div>
+                <div
+                    class="border border-gray-200 not-prose rounded-md bg-white h-full overflow-scroll"
+                >
+                    <UTable :rows="groups" :columns="columns">
+                        <template #actions-data="{ row }">
+                            <div class="flex justify-end">
+                                <UButton
+                                    color="gray"
+                                    variant="ghost"
+                                    icon="i-heroicons-trash"
+                                    @click="groupsStore.deleteGroup(row)"
+                                />
+                            </div>
+                        </template>
+                        <template #empty-state>
+                            <div
+                                class="flex flex-col items-center justify-center py-6 gap-3 h-full"
+                            >
+                                <nuxt-link to="/faculties">
+                                    <UButton label="Добавить группу" />
+                                </nuxt-link>
+                            </div>
+                        </template>
+                    </UTable>
                 </div>
             </template>
         </Modal>
@@ -36,6 +62,20 @@ import { useGroupsStore } from "@/store/groups";
 import { storeToRefs } from "pinia";
 const groupsStore = useGroupsStore();
 const { groups, defaultGroup, defaultGroupInfo } = storeToRefs(groupsStore);
+const columns = [
+    {
+        key: "name",
+        label: "Группа",
+    },
+    {
+        key: "faculty_id",
+        label: "Факультет",
+    },
+
+    {
+        key: "actions",
+    },
+];
 const settingsModalActive = ref(false);
 </script>
 <style lang="scss" scoped>

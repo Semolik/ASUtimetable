@@ -22,7 +22,7 @@
         >
             clear
         </div>
-        <div
+        <nuxt-link
             class="plus-button"
             @click="
                 () => {
@@ -36,7 +36,7 @@
             "
         >
             <Icon name="material-symbols:add-rounded" />
-        </div>
+        </nuxt-link>
     </div>
 </template>
 <script setup>
