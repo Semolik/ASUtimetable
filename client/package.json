@@ -18,9 +18,12 @@
         "nuxt-icon": "^0.5.0"
     },
     "dependencies": {
+        "@formkit/auto-animate": "^0.7.0",
         "@pinia/nuxt": "^0.4.11",
         "@vueuse/core": "^10.3.0",
         "@vueuse/nuxt": "^10.3.0",
+        "gsap": "^3.12.2",
+        "moment": "^2.29.4",
         "openapi-typescript-codegen": "^0.25.0",
         "sass": "^1.66.1"
     },

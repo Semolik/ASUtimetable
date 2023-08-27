@@ -21,7 +21,6 @@
     height: 100%;
 
     .app-content {
-        height: 100%;
         flex-grow: 1;
         padding: 10px;
     }

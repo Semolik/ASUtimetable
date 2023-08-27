@@ -1,6 +1,9 @@
 <template>
     <header>
-        <nuxt-link to="/" class="header-text">Расписание</nuxt-link>
+        <nuxt-link to="/" class="settings-button">
+            <Icon name="material-symbols:home" />
+        </nuxt-link>
+        <div class="header-text" id="header-text">{{ headerText }}</div>
         <div
             class="settings-button"
             @click="settingsModalActive = !settingsModalActive"
@@ -84,15 +87,20 @@ const settingsModalActive = ref(false);
 <style lang="scss" scoped>
 header {
     color: $accent-1;
-    padding: 20px;
+    padding: 10px;
+    padding-bottom: 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     .header-text {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         color: $accent-1;
         text-decoration: none;
         font-weight: 500;
+        width: 100%;
+        @include flex-center;
+        height: 100%;
     }
     .settings-button {
         background-color: $secondary-color;
@@ -101,8 +109,8 @@ header {
         box-shadow: $shadow-1;
         border-radius: 16px;
         svg {
-            width: 20px;
-            height: 20px;
+            width: 25px;
+            height: 25px;
         }
     }
 }

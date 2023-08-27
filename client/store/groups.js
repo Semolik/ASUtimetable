@@ -4,7 +4,7 @@ import { useLocalStorage } from "@vueuse/core";
 export const useGroupsStore = defineStore("groups_", {
     state: () => ({
         groups_: useLocalStorage("groups_", []),
-        defaultGroup: useLocalStorage("default-group", {}),
+        defaultGroup: useLocalStorage("default-group", null),
     }),
     actions: {
         addGroup(group) {

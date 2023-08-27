@@ -30,10 +30,10 @@
 <script setup>
 import { useGroupsStore } from "@/store/groups";
 import { storeToRefs } from "pinia";
+headerText.value = "Главная";
 const groupsStore = useGroupsStore();
 const { groups, defaultGroup } = storeToRefs(groupsStore);
 const currentGroup = ref(defaultGroup.value);
-
 watch(defaultGroup, (newdefaultGroup) => {
     currentGroup.value = newdefaultGroup;
 });
@@ -60,7 +60,9 @@ const increment = ref(1);
         justify-content: center;
         align-items: center;
         cursor: pointer;
-
+        @include has-hover {
+            background-color: $accent-1-hover;
+        }
         svg {
             width: 25px;
             height: 25px;
