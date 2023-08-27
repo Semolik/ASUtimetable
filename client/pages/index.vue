@@ -22,19 +22,7 @@
         >
             clear
         </div>
-        <nuxt-link
-            class="plus-button"
-            @click="
-                () => {
-                    groupsStore.addGroup({
-                        faculty_id: increment,
-                        group_id: increment,
-                        name: `group ${increment}`,
-                    });
-                    increment++;
-                }
-            "
-        >
+        <nuxt-link class="plus-button" to="/faculties">
             <Icon name="material-symbols:add-rounded" />
         </nuxt-link>
     </div>

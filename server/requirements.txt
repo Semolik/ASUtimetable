@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+lxml
+aiohttp
+redis
+cashews
+python-dotenv

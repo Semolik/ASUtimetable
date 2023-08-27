@@ -7,6 +7,14 @@ export default defineNuxtConfig({
     colorMode: {
         preference: "light",
     },
+    plugins: ["@/plugins/api"],
+    nitro: {
+        devProxy: {
+            "/api": {
+                target: "http://127.0.0.1:8000",
+            },
+        },
+    },
     vite: {
         css: {
             preprocessorOptions: {

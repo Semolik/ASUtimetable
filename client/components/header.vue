@@ -46,7 +46,10 @@
                             <div
                                 class="flex flex-col items-center justify-center py-6 gap-3 h-full"
                             >
-                                <nuxt-link to="/faculties">
+                                <nuxt-link
+                                    to="/faculties"
+                                    @click="settingsModalActive = false"
+                                >
                                     <UButton label="Добавить группу" />
                                 </nuxt-link>
                             </div>

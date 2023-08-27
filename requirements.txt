@@ -1,8 +1,0 @@
-dependency-injector
-fastapi
-uvicorn
-lxml
-beautifulsoup4
-aiohttp
-pytz
-aioredis<2
