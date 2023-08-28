@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from server.ASU import ASU
-from server.schemas import FacultyBase,Faculty
+from server.schemas import FacultyBase,Faculty, Group
 router = APIRouter()
 asu_api = ASU()
 
@@ -13,6 +13,6 @@ async def get_faculty(faculty_id: int):
     return await asu_api.get_faculty(faculty_id=faculty_id)
 
 
-@router.get("/faculties/{faculty_id}/groups/{group_id}")
+@router.get("/faculties/{faculty_id}/groups/{group_id}", response_model=Group)
 async def get_group(faculty_id: int, group_id: int, date_start: int = None, date_end: int = None):
     return await asu_api.get_group(faculty_id=faculty_id, group_id=group_id, date_start=date_start, date_end=date_end)

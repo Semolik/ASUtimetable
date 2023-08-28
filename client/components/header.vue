@@ -91,7 +91,6 @@ header {
     padding-bottom: 0px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     gap: 10px;
     .header-text {
         font-size: 1.2rem;
@@ -108,6 +107,7 @@ header {
         cursor: pointer;
         box-shadow: $shadow-1;
         border-radius: 16px;
+        height: min-content;
         svg {
             width: 25px;
             height: 25px;

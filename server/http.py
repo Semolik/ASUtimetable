@@ -13,8 +13,8 @@ async def get_tree(url: str):
     try:
         async with aiohttp.ClientSession(timeout=session_timeout) as session:
             response = await session.get(url)
-            if response.status != 200:
-                return response.status
+            if 200 >= response.status > 300:
+                raise HTTPException(status_code=response.status, detail="Не удалось подключиться к сайту.")
             html = await response.text()
             tree = etree.HTML(html)
             return tree

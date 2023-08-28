@@ -12,7 +12,8 @@ class GroupParser:
         dateArg = '-'.join(map(lambda date: datetime.strftime(
                 date, TIMETABLE_URL_DATETIME_FORMAT), dates))
         tree = await get_tree(f'https://www.asu.ru/timetable/students/{self.faculty_id}/{self.group_id}?date={dateArg}')
-        name = tree.xpath('/html/body/div[1]/div/div/div[1]/h1/text()')[-1].strip()
+        name = tree.xpath('/html/body/div[1]/div/div/div[1]/h1/text()')
+        name = name[-1].strip() if name else None
         if name == 'Расписание занятий':
             raise HTTPException(status_code=404, detail="Группа не найдена")
         shedule = self.get_shedule(tree)
