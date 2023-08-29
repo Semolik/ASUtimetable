@@ -17,12 +17,15 @@ class Lecturer(BaseModel):
     name: str
     type: str
 
+class Time(BaseModel):
+    start: str
+    end: str
 class Lesson(BaseModel):
     num: int | None
     name: str
     lesson_type: str
-    lecturer: Lecturer
-    time: str | None
+    lecturer: Lecturer | None
+    time: Time | None
     room: str | None
     on_distance: bool
     is_asynchronous: bool

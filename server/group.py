@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from server.config import DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_SHORT, LESSON_DATETIME_FORMAT, TIMETABLE_URL_DATETIME_FORMAT
 from server.http import get_tree
 from fastapi import HTTPException
-from server.schemas import FacultyBase, Lecturer, Day, Lesson, Group,DayWithoutDate
+from server.schemas import FacultyBase, Lecturer, Day, Lesson, Group,DayWithoutDate, Time
 class GroupParser:
     def __init__(self, group_id: int, faculty_id: int):
         self.group_id = group_id
@@ -13,9 +13,7 @@ class GroupParser:
                 date, TIMETABLE_URL_DATETIME_FORMAT), dates))
         tree = await get_tree(f'https://www.asu.ru/timetable/students/{self.faculty_id}/{self.group_id}?date={dateArg}')
         name = tree.xpath('/html/body/div[1]/div/div/div[1]/h1/text()')
-        name = name[-1].strip() if name else None
-        if name == 'Расписание занятий':
-            raise HTTPException(status_code=404, detail="Группа не найдена")
+        name = ' '.join(filter(None, name[-1].strip().split(' '))) if name else None
         shedule = self.get_shedule(tree)
         date_start, date_end = dates
         days_dates = list()
@@ -63,7 +61,11 @@ class GroupParser:
                 lesson_type = subject.xpath('.//span[contains(@class, "schedule_table-badge")]/text()')
                 lesson_type = lesson_type[0].strip() if lesson_type else None
                 time = lesson.xpath('.//div[@data-type="time"]/text()')
-                time = time[0] if time else None
+                if time:
+                    time = time[0].split(' - ')
+                    time = Time(start=time[0], end=time[1])
+                else:
+                    time = None
                 lecturer_data = lesson.xpath('.//div[@data-type="lecturer"]')
                 lecturer = None
                 if lecturer_data:
@@ -71,7 +73,7 @@ class GroupParser:
                     lecturer_name = lecturer_name[0] if lecturer_name else None
                     lecturer_type = lecturer_data[0].xpath('.//span[contains(@class, "schedule_table-simple_badge")]/text()')
                     lecturer_type = lecturer_type[0] if lecturer_type else None
-                    lecturer = Lecturer(name=lecturer_name, type=lecturer_type)
+                    lecturer = Lecturer(name=lecturer_name, type=lecturer_type) if lecturer_name and lecturer_type else None
                 room = lesson.xpath('.//div[@data-type="room"]/a/text()')
                 room = room[0] if room else None
                 subtext = subject.xpath('.//span[contains(@class, "schedule_table-subtext")]/text()')

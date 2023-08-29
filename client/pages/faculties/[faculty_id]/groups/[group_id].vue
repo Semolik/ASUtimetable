@@ -19,9 +19,27 @@
                 </div>
             </div>
             <div class="group-info">
-                <div class="group-info_block button">прошлая неделя</div>
-                <div class="group-info_block">выбрать неделю</div>
-                <div class="group-info_block button">следующая неделя</div>
+                <div class="group-info_block button" @click="toWeek(false)">
+                    прошлая неделя
+                </div>
+                <div class="group-info_block">
+                    <DatePicker
+                        @update:modelValue="getGroupData"
+                        @popoverDidShow="popoverShowed = true"
+                        @popoverWillHide="popoverShowed = false"
+                        mode="range"
+                        v-model="range"
+                        class="calendar"
+                        :is-dark="false"
+                        :attributes="attrs"
+                        is-range
+                        is-expanded
+                    >
+                    </DatePicker>
+                </div>
+                <div class="group-info_block button" @click="toWeek(true)">
+                    следующая неделя
+                </div>
             </div>
         </div>
     </teleport>
@@ -30,6 +48,7 @@
 import { DefaultService } from "@/client";
 import moment from "moment";
 import { useGroupsStore } from "@/store/groups";
+import { DatePicker } from "v-calendar";
 
 const groupsStore = useGroupsStore();
 const windowWidth = ref(window.innerWidth);
@@ -58,17 +77,47 @@ const groupData = ref(
         group_id
     )
 );
+const range = reactive({
+    start: week_start,
+    end: week_end,
+});
+const attrs = [
+    {
+        key: "today",
+        highlight: "red",
+        dates: new Date(),
+    },
+];
+
+const popoverShowed = ref(false);
+const calendar = ref(null);
+const toWeek = (next = false) => {
+    console.log(range);
+    let start = moment(range.start)
+        .add(next ? 7 : -7, "days")
+        .startOf("isoweek")
+        .toDate();
+    range.start = start;
+    range.end = moment(start).add(6, "days").toDate();
+};
 const getGroupData = async () => {
     groupData.value =
         await DefaultService.getGroupFacultiesFacultyIdGroupsGroupIdGet(
             faculty_id,
             group_id,
-            moment(week_start).format("YYYYMMDD"),
-            moment(week_end).format("YYYYMMDD")
+            moment(range.start).format("YYYYMMDD"),
+            moment(range.end).format("YYYYMMDD")
         );
 };
 const isFavorite = computed(() => groupsStore.isFavoriteGroup(groupData.value));
-
+const dateSelected = computed(() => {
+    return (
+        moment(range.start).format("YYYYMMDD") !=
+            moment(week_start).format("YYYYMMDD") ||
+        moment(range.end).format("YYYYMMDD") !=
+            moment(week_end).format("YYYYMMDD")
+    );
+});
 watch([week_end, week_start], () => {
     getGroupData();
 });

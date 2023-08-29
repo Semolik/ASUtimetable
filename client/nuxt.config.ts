@@ -3,7 +3,7 @@ export default defineNuxtConfig({
     modules: ["nuxt-icon", "@pinia/nuxt", "@vueuse/nuxt", "@nuxthq/ui"],
     devtools: { enabled: true },
     ssr: false,
-    css: ["@/assets/styles/global.scss"],
+    css: ["@/assets/styles/global.scss", "v-calendar/style.css"],
     colorMode: {
         preference: "light",
     },

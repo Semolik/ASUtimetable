@@ -22,8 +22,9 @@ class ASU:
     @cache(ttl=timedelta(days=1))
     async def get_faculty(self, faculty_id: int):
         tree = await get_tree(f'https://www.asu.ru/timetable/students/{faculty_id}/')
-        name_raw = ''.join(tree.xpath('/html/body/div[1]/div/div/div[1]/div[1]/div/text()'))
+        name_raw = ''.join(tree.xpath('/html/body/div[1]/div/div/div[1]/div[1]/div[1]/text()'))
         name = re.sub(r'\((.*?)\)', r'\1', name_raw).strip()
+        name = ' '.join(filter(None, name.strip().split(' ')))
         groups_links = tree.xpath('/html/body/div[1]/div/div/div[1]/div[2]/ul/li/a')
         if not groups_links:
             raise HTTPException(status_code=404, detail="Факультет не найден")
