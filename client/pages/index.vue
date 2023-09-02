@@ -1,92 +1,76 @@
 <template>
-    <div class="index-page">
-        <div class="groups">
-            <div
-                v-for="group in groups"
-                :class="[
-                    'group',
-                    { active: groupsStore.groupsAreEqual(group, currentGroup) },
-                ]"
-                @click="currentGroup = group"
-            >
-                {{ group.name }}
+    <div class="groups">
+        <div class="groups-buttons">
+            <nuxt-link :to="{ name: 'faculties' }" class="button">
+                <div class="text">Добавить группу</div>
+            </nuxt-link>
+        </div>
+        <template v-if="!groups.length">
+            <div class="empty-groups">
+                <div class="text">Здесь пока пусто</div>
             </div>
+        </template>
+        <div class="groups-container">
+            <group-block
+                v-for="group in groups"
+                :key="group.id"
+                :group="group"
+            />
         </div>
-        <div
-            @click="
-                () => {
-                    groups.length = 0;
-                    defaultGroup = null;
-                }
-            "
-        >
-            clear
-        </div>
-        <nuxt-link class="plus-button" to="/faculties">
-            <Icon name="material-symbols:add-rounded" />
-        </nuxt-link>
     </div>
 </template>
 <script setup>
 import { useGroupsStore } from "@/store/groups";
 import { storeToRefs } from "pinia";
-headerText.value = "Главная";
+
 const groupsStore = useGroupsStore();
-const { groups, defaultGroup } = storeToRefs(groupsStore);
-const currentGroup = ref(defaultGroup.value);
-watch(defaultGroup, (newdefaultGroup) => {
-    currentGroup.value = newdefaultGroup;
-});
-const increment = ref(1);
+const { groups } = storeToRefs(groupsStore);
+headerText.value = "Расписание";
 </script>
 <style lang="scss" scoped>
-.index-page {
-    display: flex;
-    flex-direction: column;
+.groups {
+    display: grid;
+    grid-template-rows: min-content 1fr;
     gap: 10px;
-    position: relative;
-    height: 100%;
-    padding: 0px 10px;
 
-    .plus-button {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background-color: $accent-1;
+    .groups-buttons {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        @include has-hover {
-            background-color: $accent-1-hover;
-        }
-        svg {
-            width: 25px;
-            height: 25px;
-            color: $secondary-color;
-        }
-    }
-    .groups {
-        display: flex;
+        justify-content: right;
         gap: 10px;
-        overflow-x: auto;
-        .group {
-            padding: 5px 16px;
-            border-radius: 16px;
-            color: $text-color-2;
+
+        .button {
+            padding: 5px 15px;
+            line-height: 20px;
+            text-decoration: none;
+            border-radius: 20px;
             cursor: pointer;
-            font-weight: 500;
-            background-color: transparent;
-            white-space: nowrap;
-            transition: background-color 0.2s ease, color 0.2s ease;
-            &.active {
-                background-color: $accent-1;
-                color: $secondary-color;
+            background-color: $secondary-background;
+
+            @include has-hover {
+                background-color: $tetriary-background;
             }
         }
+    }
+
+    .empty-groups {
+        padding: 1.5rem;
+        border: 2px dashed $primary-text;
+        border-radius: 10px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .text {
+            font-size: large;
+        }
+    }
+
+    .groups-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
     }
 }
 </style>

@@ -1,8 +1,42 @@
-$primary-bg: rgb(248, 248, 234);
-$secondary-color: white;
-$accent-1: rgb(90, 70, 70);
-$accent-1-hover: lighten($accent-1, 10%);
-$text-color: black;
-$text-color-2: rgba(143, 143, 143);
+$primary-background: #181818;
+$secondary-background: rgb(34, 34, 34);
+$tetriary-background: rgb(40, 40, 40);
+$quaternary-background: rgb(52, 52, 52);
+$qiunary-background: rgb(60, 60, 60);
+$senary-background: rgb(68, 68, 68);
+$primary-border: rgba(84, 84, 84, 0.48);
 
-$shadow-1: 0px 0px 8px 0px rgba($accent-1, 0.1);
+$primary-text: #ffffff;
+$secondary-text: rgb(235, 235, 235);
+$tetriary-text: rgb(206, 206, 206);
+$quternary-text: rgb(190, 190, 190);
+$accent-red-2: rgb(255, 0, 0);
+$accent-red: hsl(0, 50%, 40%);
+$accent-red-hover: rgba($accent-red, 0.5);
+$accent-blue: hsl(216, 50%, 40%);
+$accent-blue-hover: rgba($accent-blue, 0.5);
+$accent-green: hsl(128, 50%, 40%);
+$accent-green-hover: rgba($accent-green, 0.5);
+$accent-yellow: hsl(54, 50%, 40%);
+$accent-yellow-hover: rgba($accent-yellow, 0.5);
+$accent-purple: hsl(261, 50%, 50%);
+$accent-purple-hover: rgba($accent-purple, 0.5);
+
+body {
+    color: $primary-text;
+    background: $primary-background;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: $secondary-background;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $tetriary-background;
+    border-radius: 20px;
+}

@@ -12,7 +12,10 @@
                     {{ groupData.name }}
                 </div>
                 <div
-                    :class="['favorite', { active: isFavorite }]"
+                    :class="[
+                        'group-info_block favorite button',
+                        { active: isFavorite },
+                    ]"
                     @click="groupsStore.toggleFavorite(groupData)"
                 >
                     <Icon name="material-symbols:favorite" />
@@ -20,25 +23,42 @@
             </div>
             <div class="group-info">
                 <div class="group-info_block button" @click="toWeek(false)">
-                    прошлая неделя
+                    <span>прошлая неделя</span>
+                    <Icon name="material-symbols:arrow-back-rounded" />
                 </div>
-                <div class="group-info_block">
-                    <DatePicker
-                        @update:modelValue="getGroupData"
-                        @popoverDidShow="popoverShowed = true"
-                        @popoverWillHide="popoverShowed = false"
-                        mode="range"
-                        v-model="range"
-                        class="calendar"
-                        :is-dark="false"
-                        :attributes="attrs"
-                        is-range
-                        is-expanded
-                    >
-                    </DatePicker>
-                </div>
+
+                <DatePicker
+                    @update:modelValue="getGroupData"
+                    mode="range"
+                    v-model.range="range"
+                    class="calendar"
+                    is-dark
+                    :attributes="attrs"
+                    :popover="false"
+                    ref="calendar"
+                    is-range
+                    is-expanded
+                >
+                    <template v-slot="{ inputValue, togglePopover }">
+                        <div
+                            class="group-info_block button date"
+                            @click="
+                                togglePopover({
+                                    placement: 'bottom',
+                                })
+                            "
+                        >
+                            <template v-if="dateSelected">
+                                {{ inputValue.start }} -
+                                {{ inputValue.end }}
+                            </template>
+                            <div v-else>выбрать даты</div>
+                        </div>
+                    </template>
+                </DatePicker>
                 <div class="group-info_block button" @click="toWeek(true)">
-                    следующая неделя
+                    <span>следующая неделя</span>
+                    <Icon name="material-symbols:arrow-forward-rounded" />
                 </div>
             </div>
         </div>
@@ -77,6 +97,7 @@ const groupData = ref(
         group_id
     )
 );
+const calendar = ref(null);
 const range = reactive({
     start: week_start,
     end: week_end,
@@ -88,19 +109,22 @@ const attrs = [
         dates: new Date(),
     },
 ];
-
-const popoverShowed = ref(false);
-const calendar = ref(null);
-const toWeek = (next = false) => {
-    console.log(range);
+const toWeek = (next) => {
     let start = moment(range.start)
         .add(next ? 7 : -7, "days")
         .startOf("isoweek")
         .toDate();
+    var end = moment(start).add(6, "days").toDate();
+
+    calendar.value.updateValue({
+        start: start,
+        end: end,
+    });
     range.start = start;
-    range.end = moment(start).add(6, "days").toDate();
+    range.end = end;
 };
-const getGroupData = async () => {
+const getGroupData = async (A) => {
+    console.log(A);
     groupData.value =
         await DefaultService.getGroupFacultiesFacultyIdGroupsGroupIdGet(
             faculty_id,
@@ -118,7 +142,7 @@ const dateSelected = computed(() => {
             moment(week_end).format("YYYYMMDD")
     );
 });
-watch([week_end, week_start], () => {
+watch([() => week_end, () => week_start], () => {
     getGroupData();
 });
 headerText.value = "";
@@ -130,65 +154,82 @@ onMounted(() => {
 .group-info-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
     width: 100%;
-    max-width: 1200px;
+    gap: 10px;
+    color: $primary-text;
+    border-radius: 20px;
     margin: 0 auto;
-    .group-info {
-        border-radius: 16px;
-        padding: 8px;
-        display: flex;
-        color: $accent-1;
-        gap: 8px;
-        width: 100%;
-        padding: 8px;
-        background-color: rgba($color: #000000, $alpha: 0.1);
-        .group-info_block {
-            background-color: rgba($color: #000000, $alpha: 0.1);
-            padding: 8px;
-        }
-
-        @include md(true) {
-            flex-direction: column;
-        }
-
-        @include has-hover {
-            .button.group-info_block:hover,
-            a.group-info_block:hover {
-                background-color: rgba($color: #000000, $alpha: 0.2);
-                color: #000000;
-                cursor: pointer;
-            }
-        }
-        &_block {
-            @include flex-center;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 500;
-            text-decoration: none;
-            flex-grow: 1;
-            border-radius: 8px;
-        }
+    padding: 10px;
+    max-width: 1400px;
+    @include lg {
+        background-color: $secondary-background;
     }
-    .favorite {
-        @include flex-center;
-        padding: 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        background-color: rgba($color: #000000, $alpha: 0.1);
-        @include has-hover {
-            &:hover {
-                background-color: rgba($color: #000000, $alpha: 0.2);
+
+    .group-info {
+        display: flex;
+        gap: 10px;
+        @include lg(true) {
+            flex-wrap: wrap;
+            background-color: $secondary-background;
+            border-radius: 20px;
+            padding: 10px;
+        }
+        .calendar {
+            width: 100%;
+        }
+        .group-info_block.button,
+        a.group-info_block {
+            cursor: pointer;
+            @include has-hover {
+                background-color: $qiunary-background;
             }
         }
-        transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
-        &.active {
-            color: red;
-        }
 
-        svg {
-            width: 20px;
-            height: 20px;
+        .group-info_block {
+            background-color: $quaternary-background;
+            border-radius: 10px;
+            padding: 10px 30px;
+            display: flex;
+            flex-grow: 1;
+            user-select: none;
+            @include flex-center;
+
+            &.date {
+                padding: 10px;
+            }
+            text-align: center;
+            svg {
+                width: 24px;
+                height: 24px;
+                fill: $primary-text;
+                @include md {
+                    display: none;
+                }
+            }
+
+            @include md(true) {
+                span {
+                    display: none;
+                }
+            }
+
+            &.favorite {
+                cursor: pointer;
+                min-width: 50px;
+                @include lg {
+                    flex-grow: 0;
+                }
+                svg {
+                    display: block;
+                    transition: 0.3s;
+                }
+
+                &.active {
+                    svg {
+                        color: $accent-red-2;
+                    }
+                }
+            }
         }
     }
 }

@@ -12,81 +12,15 @@
         </div>
 
         <Modal v-model:active="settingsModalActive" :min-height="500">
-            <template #content>
-                <div class="field">
-                    <label>Группа по умолчанию</label>
-                    <USelectMenu
-                        :model-value="defaultGroup"
-                        @update:model-value="groupsStore.setDefault"
-                        :options="groups"
-                        :disabled="!defaultGroup"
-                        option-attribute="name"
-                        size="xl"
-                    >
-                        <template #label>
-                            <span v-if="defaultGroup">{{
-                                defaultGroupInfo?.name
-                            }}</span>
-                            <span v-else>Нет избранных групп</span>
-                        </template>
-                    </USelectMenu>
-                </div>
-                <div
-                    class="border border-gray-200 not-prose rounded-md bg-white h-full overflow-scroll"
-                >
-                    <UTable :rows="groups" :columns="columns">
-                        <template #actions-data="{ row }">
-                            <div class="flex justify-end">
-                                <UButton
-                                    color="gray"
-                                    variant="ghost"
-                                    icon="i-heroicons-trash"
-                                    @click="groupsStore.deleteGroup(row)"
-                                />
-                            </div>
-                        </template>
-                        <template #empty-state>
-                            <div
-                                class="flex flex-col items-center justify-center py-6 gap-3 h-full"
-                            >
-                                <nuxt-link
-                                    to="/faculties"
-                                    @click="settingsModalActive = false"
-                                >
-                                    <UButton label="Добавить группу" />
-                                </nuxt-link>
-                            </div>
-                        </template>
-                    </UTable>
-                </div>
-            </template>
+            <template #content>asdas </template>
         </Modal>
     </header>
 </template>
 <script setup>
-import { useGroupsStore } from "@/store/groups";
-import { storeToRefs } from "pinia";
-const groupsStore = useGroupsStore();
-const { groups, defaultGroup, defaultGroupInfo } = storeToRefs(groupsStore);
-const columns = [
-    {
-        key: "name",
-        label: "Группа",
-    },
-    {
-        key: "faculty_id",
-        label: "Факультет",
-    },
-
-    {
-        key: "actions",
-    },
-];
 const settingsModalActive = ref(false);
 </script>
 <style lang="scss" scoped>
 header {
-    color: $accent-1;
     padding: 10px;
     padding-bottom: 0px;
     display: flex;
@@ -94,7 +28,7 @@ header {
     gap: 10px;
     .header-text {
         font-size: 1.2rem;
-        color: $accent-1;
+
         text-decoration: none;
         font-weight: 500;
         width: 100%;
@@ -102,24 +36,15 @@ header {
         height: 100%;
     }
     .settings-button {
-        background-color: $secondary-color;
         padding: 16px;
         cursor: pointer;
-        box-shadow: $shadow-1;
+        background-color: $secondary-background;
         border-radius: 16px;
         height: min-content;
         svg {
             width: 25px;
             height: 25px;
         }
-    }
-}
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    label {
-        font-size: 14px;
     }
 }
 </style>

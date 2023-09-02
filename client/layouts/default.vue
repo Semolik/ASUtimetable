@@ -19,7 +19,8 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-
+    max-width: 1400px;
+    margin: 0 auto;
     .app-content {
         flex-grow: 1;
         padding: 10px;

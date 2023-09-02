@@ -1,18 +1,21 @@
 <template>
-    <ListSearch :items="faculties" searchPropety="name">
+    <HeadInfo text="Найти факультет" :all-items="faculties">
         <template #default="{ items }">
             <ListItem
-                :to="`/faculties/${item.id}`"
-                v-for="item in items"
-                :key="item.id"
+                :to="{
+                    name: 'faculties-faculty_id',
+                    params: { faculty_id: faculty.id },
+                }"
+                v-for="faculty in items"
+                :key="faculty.id"
             >
-                {{ item.name }}
+                {{ faculty.name }}
             </ListItem>
         </template>
-    </ListSearch>
+    </HeadInfo>
 </template>
 <script setup>
 import { DefaultService } from "@/client";
-headerText.value = "Факультеты";
+
 const faculties = await DefaultService.getFacultiesFacultiesGet();
 </script>

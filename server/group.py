@@ -44,6 +44,8 @@ class GroupParser:
                 return []
             raise HTTPException(status_code=404, detail=alert_text)
         schedule = tree.xpath('.//div[@class="schedule_table-body"]')
+        if not schedule:
+            return []
         days = []
         for row in schedule[0].xpath('.//div[@class="schedule_table-body-rows_group"]'):
             date = row.xpath('.//span[@class="schedule_table-date-dm"]/text()')[0]

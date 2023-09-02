@@ -3,7 +3,10 @@ export default defineNuxtConfig({
     modules: ["nuxt-icon", "@pinia/nuxt", "@vueuse/nuxt", "@nuxthq/ui"],
     devtools: { enabled: true },
     ssr: false,
-    css: ["@/assets/styles/global.scss", "v-calendar/style.css"],
+    css: ["v-calendar/style.css", "@/assets/styles/global.scss"],
+    experimental: {
+        typedPages: true,
+    },
     colorMode: {
         preference: "light",
     },
@@ -15,7 +18,16 @@ export default defineNuxtConfig({
             },
         },
     },
-
+    app: {
+        head: {
+            meta: [
+                {
+                    name: "theme-color",
+                    content: "#181818",
+                },
+            ],
+        },
+    },
     vite: {
         css: {
             preprocessorOptions: {
@@ -24,6 +36,8 @@ export default defineNuxtConfig({
                         '@use "@/assets/styles/colors.scss" as *;',
                         '@use "@/assets/styles/breakpoints.scss" as *;',
                         '@use "@/assets/styles/helpers.scss" as *;',
+                        '@use "@/assets/styles/animations.scss" as *;',
+                        '@use "@/assets/styles/themes.scss" as *;',
                     ].join(""),
                 },
             },

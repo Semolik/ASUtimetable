@@ -29,7 +29,7 @@ const handleError = () => {
     justify-content: center;
     align-items: center;
     height: 100%;
-    color: $text-color;
+    color: var(--color-text);
     .error__content {
         display: flex;
         flex-direction: column;
@@ -48,8 +48,8 @@ const handleError = () => {
         .button {
             padding: 10px 20px;
             border-radius: 5px;
-            background-color: $accent-1;
-            color: $secondary-color;
+            background-color: var(--color-background-mute);
+            color: var(--color-background-mute-4);
             cursor: pointer;
         }
     }

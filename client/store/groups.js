@@ -4,7 +4,6 @@ import { useLocalStorage } from "@vueuse/core";
 export const useGroupsStore = defineStore("groups", {
     state: () => ({
         groups: useLocalStorage("groups", []),
-        defaultGroup: useLocalStorage("default-group", {}),
     }),
     actions: {
         addGroup(group) {
@@ -38,13 +37,6 @@ export const useGroupsStore = defineStore("groups", {
         isFavoriteGroup(group) {
             return this.groups.some((group_) =>
                 this.groupsAreEqual(group_, group)
-            );
-        },
-    },
-    getters: {
-        defaultGroupInfo() {
-            return this.groups.find((group) =>
-                this.groupsAreEqual(group, this.defaultGroup)
             );
         },
     },

@@ -199,7 +199,7 @@ watch(
     }
 
     .modal {
-        background-color: $secondary-color;
+        background-color: $secondary-background;
         max-width: v-bind(width);
         max-height: v-bind(height);
         width: 100%;
