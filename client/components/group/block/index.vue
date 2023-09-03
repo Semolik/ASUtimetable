@@ -6,7 +6,6 @@
                     {{ group.name }}
                 </div>
             </div>
-
             <div
                 :class="[
                     'day-of-week',
@@ -22,7 +21,7 @@
                         { active: index === selectedDayIndex },
                         { current: day.is_current },
                     ]"
-                    v-for="(day, index) in days"
+                    v-for="(day, index) in filteredDays"
                     @click="selectedDayIndex = index"
                 >
                     <div class="day-number">{{ day.date_text }}</div>
@@ -43,7 +42,7 @@
             открыть страницу группы
         </nuxt-link>
         <div class="lessons">
-            <suspense>
+            <suspense v-if="!isSunday">
                 <template #default>
                     <group-block-lessons
                         :group="group"
@@ -54,6 +53,7 @@
                     <loading />
                 </template>
             </suspense>
+            <div class="no-lessons" v-else>В воскресенье нет занятий</div>
         </div>
     </div>
 </template>
@@ -67,7 +67,12 @@ const { group } = defineProps({
     },
 });
 
-const now = new Date();
+var now_moment = moment();
+const now = now_moment.toDate();
+var week_start = now_moment.startOf("isoweek").toDate();
+week_start.setHours(0, 0, 0, 0);
+var week_end = now_moment.endOf("isoweek").toDate();
+week_end.setHours(0, 0, 0, 0);
 const dateIsEqual = (date1, date2) => {
     return (
         date1.getDate() === date2.getDate() &&
@@ -76,11 +81,10 @@ const dateIsEqual = (date1, date2) => {
     );
 };
 const days = [];
-const startDate = new Date();
-startDate.setDate(startDate.getDate() - startDate.getDay() + 1);
-for (let i = 0; i < 6; i++) {
-    const date = new Date(startDate);
-    date.setDate(startDate.getDate() + i);
+
+for (let i = 0; i < 7; i++) {
+    const date = new Date(week_start);
+    date.setDate(date.getDate() + i);
     const isCurrent = dateIsEqual(date, now);
     const day = {
         date_text: moment(date).format("DD.MM"),
@@ -96,6 +100,13 @@ const currentDayIndex = computed(() => {
     return days.findIndex((day) => day.is_current);
 });
 const selectedDay = computed(() => days[selectedDayIndex.value]);
+const sundayIndex = computed(() =>
+    days.findIndex((day) => day.date.getDay() === 0)
+);
+const filteredDays = computed(() =>
+    days.filter((day, index) => index !== sundayIndex.value)
+);
+const isSunday = computed(() => selectedDay.value.date.getDay() === 0);
 </script>
 <style lang="scss" scoped>
 .home-group {
@@ -222,6 +233,13 @@ const selectedDay = computed(() => days[selectedDayIndex.value]);
         }
         border-radius: 15px;
         overflow: hidden;
+
+        .no-lessons {
+            @include flex-center;
+            height: 100%;
+            background-color: $tetriary-background;
+            border-radius: 15px;
+        }
     }
 }
 </style>
