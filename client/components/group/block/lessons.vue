@@ -30,6 +30,10 @@ const group = await DefaultService.getGroupFacultiesFacultyIdGroupsGroupIdGet(
 .lessons {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
+
+    @include xl {
+        gap: 10px;
+    }
 }
 </style>

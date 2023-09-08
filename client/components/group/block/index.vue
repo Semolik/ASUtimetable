@@ -41,7 +41,7 @@
         >
             открыть страницу группы
         </nuxt-link>
-        <div class="lessons">
+        <div class="lessons-container">
             <suspense v-if="!isSunday">
                 <template #default>
                     <group-block-lessons
@@ -188,10 +188,10 @@ const isSunday = computed(() => selectedDay.value.date.getDay() === 0);
                 }
 
                 &.current {
-                    background-color: $accent-red;
+                    background-color: $accent-red-hover;
 
                     @include has-hover {
-                        background-color: $accent-red-hover;
+                        background-color: $accent-red;
                     }
                     &.active {
                         background-color: $accent-red;
@@ -226,13 +226,14 @@ const isSunday = computed(() => selectedDay.value.date.getDay() === 0);
         }
     }
 
-    .lessons {
+    .lessons-container {
         @include xl {
             grid-column: 2;
             grid-row: 1 / 3;
         }
-        border-radius: 15px;
-        overflow: hidden;
+        @include xl(true) {
+            padding-top: 10px;
+        }
 
         .no-lessons {
             @include flex-center;

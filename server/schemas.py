@@ -24,6 +24,7 @@ class Lesson(BaseModel):
     num: int | None
     name: str
     lesson_type: str
+    lesson_info: str | None
     lecturer: Lecturer | None
     time: Time | None
     room: str | None
