@@ -27,35 +27,28 @@
             </div>
         </div>
         <div class="line">
-            <div class="block" v-if="time && !(isOnDistance && isAsyncLesson)">
-                {{ time }}
+            <div class="block" v-if="lesson.time && !lesson.is_asynchronous">
+                {{ lesson.time?.start }} - {{ lesson.time?.end }}
+            </div>
+            <div
+                :class="[
+                    'block lesson-type',
+                    { 'is-lecture': lesson.lesson_type === 'лек.' },
+                    { 'is-practice': lesson.lesson_type === 'пр.з.' },
+                    { 'is-laboratory-work': lesson.lesson_type === 'лаб.' },
+                ]"
+            >
+                {{ lesson.lesson_type }}
             </div>
             <div class="block on-distance" v-if="lesson.on_distance">
                 дистанционно
-            </div>
-            <div class="block on-distance" v-if="lesson.is_asynchronous">
-                асинхронно
-            </div>
-            <div class="block is-lecture" v-if="lesson.lesson_type === 'лек.'">
-                лекция
+                {{ lesson.is_asynchronous ? "асинхронно" : "синхронно" }}
             </div>
 
-            <div
-                class="block is-practice"
-                v-if="lesson.lesson_type === 'пр.з.'"
-            >
-                практическое занятие
-            </div>
-            <div
-                class="block is-laboratory-work"
-                v-if="lesson.lesson_type === 'лаб.'"
-            >
-                лабораторная работа
-            </div>
             <div class="block room" v-if="lesson.room">
                 {{ lesson.room }}
             </div>
-            <div v-if="lesson.lecturer" :to="lecturerLink" class="block">
+            <div v-if="lesson.lecturer" class="block">
                 {{ lesson.lecturer?.name }}
             </div>
         </div>
@@ -94,6 +87,22 @@ const { lesson } = defineProps({
             &.room {
                 flex-grow: 0;
             }
+
+            &.lesson-type {
+                padding: 2px 10px;
+
+                &.is-lecture {
+                    background-color: $accent-green;
+                }
+
+                &.is-practice,
+                &.is-laboratory-work {
+                    background-color: $accent-red;
+                }
+            }
+            &:last-child {
+                flex-grow: 1;
+            }
         }
     }
     .name-line {
@@ -117,7 +126,7 @@ const { lesson } = defineProps({
         }
 
         .lesson-info {
-            background-color: $accent-blue;
+            background-color: $accent-purple;
             border-radius: 10px;
             @include flex-center;
             color: $primary-text;

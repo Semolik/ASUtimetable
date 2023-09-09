@@ -1,11 +1,6 @@
 <template>
     <div class="home-group">
         <div class="column">
-            <div class="names">
-                <div class="name">
-                    {{ group.name }}
-                </div>
-            </div>
             <div
                 :class="[
                     'day-of-week',
@@ -14,6 +9,24 @@
             >
                 {{ selectedDay.name }}
             </div>
+            <div class="names">
+                <div class="name">
+                    {{ group.name }}
+                </div>
+            </div>
+
+            <nuxt-link
+                class="group-link"
+                :to="{
+                    name: 'faculties-faculty_id-groups-group_id',
+                    params: {
+                        faculty_id: group.faculty.id,
+                        group_id: group.id,
+                    },
+                }"
+            >
+                открыть страницу группы
+            </nuxt-link>
             <div class="dates">
                 <div
                     :class="[
@@ -29,18 +42,7 @@
                 </div>
             </div>
         </div>
-        <nuxt-link
-            class="group-link"
-            :to="{
-                name: 'faculties-faculty_id-groups-group_id',
-                params: {
-                    faculty_id: group.faculty.id,
-                    group_id: group.id,
-                },
-            }"
-        >
-            открыть страницу группы
-        </nuxt-link>
+
         <div class="lessons-container">
             <suspense v-if="!isSunday">
                 <template #default>
@@ -50,7 +52,7 @@
                     />
                 </template>
                 <template #fallback>
-                    <loading />
+                    <loading use-text />
                 </template>
             </suspense>
             <div class="no-lessons" v-else>В воскресенье нет занятий</div>
@@ -143,7 +145,8 @@ const isSunday = computed(() => selectedDay.value.date.getDay() === 0);
                 border-radius: 15px;
                 @include flex-center;
                 min-height: $min-block;
-                background-color: $accent-purple;
+                // background-color: $accent-purple;
+                background-color: $quaternary-background;
             }
         }
 
@@ -230,9 +233,6 @@ const isSunday = computed(() => selectedDay.value.date.getDay() === 0);
         @include xl {
             grid-column: 2;
             grid-row: 1 / 3;
-        }
-        @include xl(true) {
-            padding-top: 10px;
         }
 
         .no-lessons {

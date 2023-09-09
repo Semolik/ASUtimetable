@@ -23,7 +23,7 @@ class GroupParser:
         box = tree.xpath('/html/body/div[contains(@class, "box")]')
         if box:
             message = ' '.join([text.text for text in box[0].getchildren()])
-            raise HTTPException(status_code=404, detail=message)
+            raise HTTPException(status_code=500, detail=message)
 
         name = tree.xpath('/html/body/div[1]/div/div/div[1]/h1/text()')
         name = ' '.join(filter(None, name[-1].strip().split(' '))) if name else None

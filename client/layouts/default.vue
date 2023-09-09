@@ -5,8 +5,11 @@
     <NuxtErrorBoundary @error="handleError">
         <div class="default-layout">
             <Header />
-            <div class="app-content">
+            <div :class="['app-content', { loading: loading }]">
                 <slot />
+                <transition class="loading" mode="out-in">
+                    <Loading darken v-if="loading" />
+                </transition>
             </div>
         </div>
         <template #error="{ error }">
@@ -24,10 +27,31 @@
     .app-content {
         flex-grow: 1;
         padding: 10px;
+
+        isolation: isolate;
+        .v-enter-active,
+        .v-leave-active {
+            transition: opacity 0.5s ease;
+        }
+
+        .v-enter-from,
+        .v-leave-to {
+            opacity: 0;
+        }
+
+        .loading {
+            position: absolute;
+            inset: 0;
+        }
+
+        &.loading {
+            overflow: hidden;
+        }
     }
 }
 </style>
 <script setup>
+const loading = useLoading();
 const fixIssue = (error) => {
     error.value = null;
 };

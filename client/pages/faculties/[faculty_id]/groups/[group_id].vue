@@ -159,10 +159,13 @@ onMounted(() => {
     color: $primary-text;
     border-radius: 20px;
     margin: 0 auto;
-    padding: 10px;
     max-width: 1400px;
     @include lg {
         background-color: $secondary-background;
+    }
+
+    @include xl {
+        padding: 10px;
     }
 
     .group-info {

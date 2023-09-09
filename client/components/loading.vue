@@ -1,6 +1,21 @@
 <template>
-    <div class="loading">загрузка...</div>
+    <div :class="['loading', { darken }]">
+        <span v-if="useText">Загрузка...</span>
+        <Icon name="svg-spinners:180-ring" v-else />
+    </div>
 </template>
+<script setup>
+const { darken, useText } = defineProps({
+    darken: {
+        type: Boolean,
+        default: false,
+    },
+    useText: {
+        type: Boolean,
+        default: false,
+    },
+});
+</script>
 <style lang="scss" scoped>
 .loading {
     @include flex-center;
@@ -8,9 +23,13 @@
     width: 100%;
     background-color: $tetriary-background;
 
+    &.darken {
+        background-color: $secondary-background;
+    }
+
     svg {
-        width: 100px;
-        height: 100px;
+        width: 30px;
+        height: 30px;
     }
 }
 </style>

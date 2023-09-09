@@ -44,10 +44,10 @@ headerText.value = "Расписание";
             text-decoration: none;
             border-radius: 20px;
             cursor: pointer;
-            background-color: $secondary-background;
+            background-color: $tetriary-background;
 
             @include has-hover {
-                background-color: $tetriary-background;
+                background-color: $qiunary-background;
             }
         }
     }

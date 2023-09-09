@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     colorMode: {
         preference: "light",
     },
-    plugins: ["@/plugins/api", "@/plugins/auto-animate"],
+    plugins: ["@/plugins/api", "@/plugins/auto-animate", "@/plugins/loading"],
     nitro: {
         devProxy: {
             "/api": {
